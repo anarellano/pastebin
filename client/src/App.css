@@ -1,0 +1,59 @@
+.block {
+  display: block;
+  border-style: solid;
+  width: fit-content;
+  block-size: fit-content;
+}
+
+/* CustomNavbar.css */
+
+/* Style the navbar background */
+.navbar {
+  background-color: #007bff; /* Blue background */
+}
+
+/* Style the brand name */
+.navbar-brand {
+  color: #fff !important; /* White text */
+}
+
+/* Style the nav links */
+.nav-link {
+  color: #f8f9fa !important; /* Light text */
+}
+
+/* Change nav link color on hover */
+.nav-link:hover {
+  color: #d4d4d4 !important; /* Lighter grey on hover */
+}
+
+/* Style the dropdown toggle */
+.dropdown-toggle {
+  color: #f8f9fa !important; /* Light text */
+}
+
+/* Change dropdown toggle color on hover */
+.dropdown-toggle:hover {
+  color: #d4d4d4 !important; /* Lighter grey on hover */
+}
+
+/* Style the dropdown menu */
+.dropdown-menu {
+  background-color: #007bff; /* Blue background */
+}
+
+/* Style the dropdown items */
+.dropdown-item {
+  color: #f8f9fa !important; /* Light text */
+}
+
+/* Change dropdown item color on hover */
+.dropdown-item:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  color: #fff !important;
+}
+
+/* Style the navbar text */
+.navbar-text {
+  color: #f8f9fa !important; /* Light text */
+}
