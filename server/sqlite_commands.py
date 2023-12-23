@@ -5,9 +5,9 @@ import random
 # table: pastes_table
 
 
-def connect_db():
+def connect_db(db_path):
     db = sqlite3.connect(
-        "pastes.db", detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
+        db_path, detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
     )
     cursor = db.cursor()
     return db, cursor
@@ -27,8 +27,8 @@ def create_name(length=10):
 
 
 # inserts the name and path in db
-def insert_text(name, path):
-    db, cursor = connect_db()
+def insert_text(db_path, name, path):
+    db, cursor = connect_db(db_path)
     print({"name": name, "path": path}, flush=True)
     cursor.execute(
         "INSERT INTO pastes_table (name, path) VALUES ( ?, ? )", (name, path)
@@ -37,8 +37,8 @@ def insert_text(name, path):
     db.close()
 
 
-def find_name(name):
-    db, cursor = connect_db()
+def find_name(db_path, name):
+    db, cursor = connect_db(db_path)
     cursor.execute("SELECT * FROM pastes_table WHERE name = ?", (name,))
     find = cursor.fetchone()
     print(find, flush=True)
@@ -48,8 +48,8 @@ def find_name(name):
     return find
 
 
-def fetch_all():
-    db, cursor = connect_db()
+def fetch_all(db_path):
+    db, cursor = connect_db(db_path)
     cursor.execute(
         'SELECT name, date_created as "[timestamp]" FROM pastes_table ORDER BY date_created DESC LIMIT 5'
     )
