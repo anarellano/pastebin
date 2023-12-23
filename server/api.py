@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from models import PasteData
 import uvicorn
-from sqliteCommands import create_name, insert_text, find_name, fetch_all
+from sqlite_commands import create_name, insert_text, find_name, fetch_all
 
 app = FastAPI()
 
@@ -51,7 +51,6 @@ def find(name: str):
 def history_component():
     data = fetch_all()
     formatted_data = []
-    print("bbb", data)
     for entry in data:
         formatted_data.append({"name": entry[0], "date": entry[1].isoformat() + "Z"})
     return formatted_data
