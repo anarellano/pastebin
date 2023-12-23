@@ -13,9 +13,7 @@ const formatFile = () => {
     const fetchData = async () => {
       try {
         if (name) {
-          const res = await fetch(
-            `http://localhost:8000/share_pastebin/${name}`
-          );
+          const res = await fetch(`http://localhost:8000/find/${name}`);
           const file = await res.json();
           setData(file);
         }

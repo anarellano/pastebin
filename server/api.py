@@ -35,8 +35,8 @@ def store_paste(paste_data: PasteData):
         return {"name": name}
 
 
-@app.get("/share_pastebin/{name}")
-def share_pastebin(name: str):
+@app.get("/find/{name}")
+def find(name: str):
     # Get URL by id
     file_details = find_name(name)
     if not file_details:
