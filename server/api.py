@@ -16,7 +16,6 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 args = parse_args()
-db_path = args.sqlite_file_path
 
 
 @app.post("/store_paste")
@@ -28,7 +27,7 @@ def store_paste(paste_data: PasteData):
         text_data = paste_data.text
         name = create_name()
         path = f"./filestorage/{name}"
-        insert_text(db_path, name, path)
+        insert_text(args.sqlite_file_path, name, path)
 
         # add name, text in file
         create_entry = open(path, "a")
@@ -41,7 +40,7 @@ def store_paste(paste_data: PasteData):
 @app.get("/find/{name}")
 def find(name: str):
     # Get URL by id
-    file_details = find_name(db_path, name)
+    file_details = find_name(args.sqlite_file_path, name)
     if not file_details:
         raise HTTPException(status_code=404, detail="No Name found")
 
@@ -52,9 +51,8 @@ def find(name: str):
 
 @app.get("/history_component")
 def history_component():
-    data = fetch_all(db_path)
+    data = fetch_all(args.sqlite_file_path)
     formatted_data = []
-    print("bbb", data)
     for entry in data:
         formatted_data.append({"name": entry[0], "date": entry[1].isoformat() + "Z"})
     return formatted_data
