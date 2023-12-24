@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from models import PasteData
 import uvicorn
 from sqlite_commands import create_name, insert_text, find_name, fetch_all
+from args import parse_args
 
 app = FastAPI()
 
@@ -14,6 +15,7 @@ app.add_middleware(
     allow_methods=["*"],  # Allows all methods
     allow_headers=["*"],  # Allows all headers
 )
+args = parse_args()
 
 
 @app.post("/store_paste")
@@ -25,7 +27,7 @@ def store_paste(paste_data: PasteData):
         text_data = paste_data.text
         name = create_name()
         path = f"./filestorage/{name}"
-        insert_text(name, path)
+        insert_text(args.sqlite_file_path, name, path)
 
         # add name, text in file
         create_entry = open(path, "a")
@@ -38,7 +40,7 @@ def store_paste(paste_data: PasteData):
 @app.get("/find/{name}")
 def find(name: str):
     # Get URL by id
-    file_details = find_name(name)
+    file_details = find_name(args.sqlite_file_path, name)
     if not file_details:
         raise HTTPException(status_code=404, detail="No Name found")
 
@@ -49,7 +51,7 @@ def find(name: str):
 
 @app.get("/history_component")
 def history_component():
-    data = fetch_all()
+    data = fetch_all(args.sqlite_file_path)
     formatted_data = []
     for entry in data:
         formatted_data.append({"name": entry[0], "date": entry[1].isoformat() + "Z"})
