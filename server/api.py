@@ -1,3 +1,4 @@
+from os import remove
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from models import PasteData
@@ -56,6 +57,19 @@ def history_component():
     for entry in data:
         formatted_data.append({"name": entry[0], "date": entry[1].isoformat() + "Z"})
     return formatted_data
+
+
+# Delete endpoint by name
+@app.get("/delete/{name}")
+def delete(name: str):
+    file_details = find_name(args.sqlite_file_path, name)
+    if not file_details:
+        raise HTTPException(status_code=404, detail="No Name found")
+    try:
+        remove(file_details[2])
+        print("deleted file")
+    except:
+        print("Could not delete")
 
 
 if __name__ == "__main__":
