@@ -59,6 +59,19 @@ def history_component():
     return formatted_data
 
 
+# Delete endpoint by name
+@app.get("/delete/{name}")
+def delete(name: str):
+    file_details = find_name(args.sqlite_file_path, name)
+    if not file_details:
+        raise HTTPException(status_code=404, detail="No Name found")
+    try:
+        remove(file_details[2])
+        print("deleted file")
+    except:
+        print("Could not delete")
+
+
 if __name__ == "__main__":
     print("server started on http://{host}:{port}")
-    uvicorn.run("api:app", host=args.host, port=args.port, reload=True)
+    uvicorn.run("api:app", host="localhost", port=8000, reload=True)
