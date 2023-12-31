@@ -72,11 +72,6 @@ def delete(name: str):
         print("Could not delete")
 
 
-@app.post("/edit/{name}")
-def edit(name: str):
-    pass
-
-
 if __name__ == "__main__":
     print("server started on http://{host}:{port}")
     uvicorn.run("api:app", host=args.host, port=args.port, reload=True)

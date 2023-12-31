@@ -57,15 +57,3 @@ def fetch_all(db_path):
     print("hey", all_records, flush=True)
     db.close()
     return all_records
-
-
-def editPage(db_path, name):
-    db, cursor = connect_db(db_path)
-    cursor.execute("SELECT * FROM pastes_table WHERE name = ?", (name,))
-    data = cursor.fetchone()
-
-    if data:
-        cursor.execute("UPDATE pastes_table SET  WHERE name=?", (name,))
-        db.commit()
-    else:
-        print("no file found")
