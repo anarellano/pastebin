@@ -1,12 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-const formatFile = () => {
-  const location = useLocation();
+// how about instead /remix/:name renders a new component RemixPaste instead
+// RemixPaste checks the id when the page loads
+//and renders a textarea with the initial value of whatever the paste is
+
+// when the Remix Button is pressed
+// Navigates to the new component remixPaste.js
+// make context page that passes in the data, so youre able to pass it on
+// once it gets to the page, the text area is already open with the previous message inside
+// when the buttone is pressed the page renders to the new page ../{name}
+
+const RemixPaste = () => {
+  // const location = useLocation();
 
   const [data, setData] = useState(null);
   const [title, setTitle] = useState("");
-  const [remix, setRemix] = useState("Remix");
+  const [remix, setRemix] = useState("Save");
   const [message, setMessage] = useState("");
   const [isEditing, setIsEditing] = useState(false);
 
@@ -29,17 +39,12 @@ const formatFile = () => {
       }
     };
     fetchData();
-  }, [location.state]);
+  }, [title]);
 
   if (!data) {
     return <div>Loading...</div>;
   }
 
-  // change message hook
-  //   wait for the hook to change
-  // send the message to the data to create own pastebin
-  // send back because of the promiseHooks(await)
-  // change url
   const changeData = async (message) => {
     try {
       const res = await fetch("http://localhost:8000/store_paste", {
@@ -62,27 +67,15 @@ const formatFile = () => {
     }
   };
 
-  // how about instead /remix/:name renders a new component RemixPaste instead
-  // RemixPaste checks the id when the page loads
-  //and renders a textarea with the initial value of whatever the paste is
-
-  // when the Remix Button is pressed
-  // Navigates to the new component remixPaste.js
-  // once it gets to the page, the text area is already open with the previous message inside
-  // when the buttone is pressed the page renders to the new page ../{name}
-
   const handleClick = async (message, title) => {
     if (remix === "Remix") {
       window.location.href = `http://localhost:3000/remix/${title}`;
-
-      // window.history.pushState({}, "", `/remix/${title}`);
-      // setIsEditing(true);
-      // setRemix("Save");
     }
     if (remix === "Save") {
       const newName = await changeData(message);
-      window.history.pushState({}, "", `/${newName}`);
-      setIsEditing(false);
+      // window.history.pushState({}, "", `/view/${newName}`);
+      window.location.href = `http://localhost:3000/view/${newName}`;
+      setIsEditing(true);
       setRemix("Remix");
     }
   };
@@ -96,12 +89,12 @@ const formatFile = () => {
         <h3>{data.file[3]}</h3>
         <h1>MESSAGE:</h1>
         {isEditing ? (
+          <pre>{message}</pre>
+        ) : (
           <textarea
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           ></textarea>
-        ) : (
-          <pre>{message}</pre>
         )}
       </div>
       <div>
@@ -113,4 +106,4 @@ const formatFile = () => {
   );
 };
 
-export default formatFile;
+export default RemixPaste;
