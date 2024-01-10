@@ -19,6 +19,7 @@ const RemixPaste = () => {
   const [remix, setRemix] = useState("Save");
   const [message, setMessage] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+  const [error, setError] = useState(null);
 
   // extracts name from the url
   let { name } = useParams();
@@ -56,11 +57,10 @@ const RemixPaste = () => {
       });
 
       if (!res) {
-        throw new Error("No response saved");
+        setError("Could not get remix paste name ");
       }
-
+      setError(null);
       const msg = await res.json();
-      console.log("Return Message:", msg);
       return msg.name;
     } catch (error) {
       console.error(error);
@@ -73,10 +73,7 @@ const RemixPaste = () => {
     }
     if (remix === "Save") {
       const newName = await changeData(message);
-      // window.history.pushState({}, "", `/view/${newName}`);
       window.location.href = `http://localhost:3000/view/${newName}`;
-      setIsEditing(true);
-      setRemix("Remix");
     }
   };
 
@@ -96,6 +93,7 @@ const RemixPaste = () => {
             onChange={(e) => setMessage(e.target.value)}
           ></textarea>
         )}
+        {error && <p style={{ color: "red", paddingTop: "7px" }}>{error}</p>}
       </div>
       <div>
         <button value={remix} onClick={() => handleClick(message, title)}>

@@ -55,7 +55,6 @@ const formatFile = () => {
       }
 
       const msg = await res.json();
-      console.log("Return Message:", msg);
       return msg.name;
     } catch (error) {
       console.error(error);
@@ -74,16 +73,10 @@ const formatFile = () => {
   const handleClick = async (message, title) => {
     if (remix === "Remix") {
       window.location.href = `http://localhost:3000/remix/${title}`;
-
-      // window.history.pushState({}, "", `/remix/${title}`);
-      // setIsEditing(true);
-      // setRemix("Save");
     }
     if (remix === "Save") {
       const newName = await changeData(message);
       window.history.pushState({}, "", `/${newName}`);
-      setIsEditing(false);
-      setRemix("Remix");
     }
   };
 
