@@ -30,6 +30,7 @@ const formatFile = () => {
   return (
     <div>
       <div>
+        <h1>Paste Information</h1>
         <h2>{data.file[1]}</h2>
         <h3>{data.file[3]}</h3>
         <pre className="block">{data.show_file}</pre>
