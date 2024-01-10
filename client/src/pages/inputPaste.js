@@ -22,7 +22,6 @@ function InputPaste() {
       const msg = await res.json();
       const name = msg.name;
       setData("");
-      //   window.location.href = <FormatFile />;
       navigate("/FormatFile", { state: { name } });
     } catch (error) {
       console.error(error);
