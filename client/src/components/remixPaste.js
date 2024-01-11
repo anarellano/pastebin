@@ -1,30 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-// how about instead /remix/:name renders a new component RemixPaste instead
-// RemixPaste checks the id when the page loads
-//and renders a textarea with the initial value of whatever the paste is
-
-// when the Remix Button is pressed
-// Navigates to the new component remixPaste.js
-// make context page that passes in the data, so youre able to pass it on
-// once it gets to the page, the text area is already open with the previous message inside
-// when the buttone is pressed the page renders to the new page ../{name}
-
 const RemixPaste = () => {
-  // const location = useLocation();
-
   const [data, setData] = useState(null);
   const [title, setTitle] = useState("");
-  const [remix, setRemix] = useState("Save");
   const [message, setMessage] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState(null);
 
-  // extracts name from the url
   let { name } = useParams();
 
-  // http://localhost:3000/FormatFile/name
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -68,13 +53,8 @@ const RemixPaste = () => {
   };
 
   const handleClick = async (message, title) => {
-    if (remix === "Remix") {
-      window.location.href = `http://localhost:3000/remix/${title}`;
-    }
-    if (remix === "Save") {
-      const newName = await changeData(message);
-      window.location.href = `http://localhost:3000/view/${newName}`;
-    }
+    const newName = await changeData(message);
+    window.location.href = `http://localhost:3000/view/${newName}`;
   };
 
   return (
@@ -96,9 +76,7 @@ const RemixPaste = () => {
         {error && <p style={{ color: "red", paddingTop: "7px" }}>{error}</p>}
       </div>
       <div>
-        <button value={remix} onClick={() => handleClick(message, title)}>
-          {remix}
-        </button>
+        <button onClick={() => handleClick(message, title)}>Save</button>
       </div>
     </div>
   );

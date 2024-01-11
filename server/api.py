@@ -53,7 +53,6 @@ def find(name: str):
 @app.get("/history_component")
 def history_component():
     data = fetch_all(args.sqlite_file_path)
-    print(data)
     formatted_data = []
     for entry in data:
         formatted_data.append({"name": entry[0], "date": entry[1].isoformat() + "Z"})
