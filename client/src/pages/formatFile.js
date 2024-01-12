@@ -62,11 +62,6 @@ const formatFile = () => {
 
   const handleClick = async (title) => {
     window.location.href = `http://localhost:3000/remix/${title}`;
-
-    // if (remix === "Save") {
-    //   const newName = await changeData(message);
-    //   window.history.pushState({}, "", `/${newName}`);
-    // }
   };
 
   return (
