@@ -8,6 +8,7 @@ const formatFile = () => {
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+  const [error, setError] = useState(null);
 
   // extracts name from the url
   let { name } = useParams();
@@ -19,6 +20,10 @@ const formatFile = () => {
         if (name) {
           const res = await fetch(`http://localhost:8000/find/${name}`);
           const file = await res.json();
+          if (!file || !res) {
+            setError("Could not find the pastes. try again later");
+          }
+          setError(null);
           setData(file);
           setTitle(file.file[1]);
           setMessage(file.show_file);
@@ -80,6 +85,7 @@ const formatFile = () => {
         ) : (
           <pre>{message}</pre>
         )}
+        {error && <p style={{ color: "red", paddingTop: "7px" }}>{error}</p>}
       </div>
       <div>
         <button onClick={() => handleClick(title)}>Remix</button>

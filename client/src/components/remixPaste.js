@@ -16,6 +16,11 @@ const RemixPaste = () => {
         if (name) {
           const res = await fetch(`http://localhost:8000/find/${name}`);
           const file = await res.json();
+
+          if (!file || !res) {
+            setError("Could not find the pastes. try again later");
+          }
+          setError(null);
           setData(file);
           setTitle(file.file[1]);
           setMessage(file.show_file);
@@ -42,7 +47,7 @@ const RemixPaste = () => {
       });
 
       if (!res) {
-        setError("Could not get remix paste name ");
+        setError("Could not get remix paste data ");
       }
       setError(null);
       const msg = await res.json();
