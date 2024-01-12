@@ -19,6 +19,7 @@ const RemixPaste = () => {
 
           if (!file || !res) {
             setError("Could not find the pastes. try again later");
+            return <div>Paste Name was not found </div>;
           }
           setError(null);
           setData(file);
@@ -30,10 +31,18 @@ const RemixPaste = () => {
       }
     };
     fetchData();
+
+    if (!fetchData) {
+      setError("Could not find paste");
+    }
   }, [title]);
 
   if (!data) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <h1>No paste data was found</h1>
+      </div>
+    );
   }
 
   const changeData = async (message) => {

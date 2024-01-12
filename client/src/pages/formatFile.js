@@ -20,9 +20,11 @@ const formatFile = () => {
         if (name) {
           const res = await fetch(`http://localhost:8000/find/${name}`);
           const file = await res.json();
+
           if (!file || !res) {
             setError("Could not find the pastes. try again later");
           }
+
           setError(null);
           setData(file);
           setTitle(file.file[1]);
@@ -36,7 +38,11 @@ const formatFile = () => {
   }, [location.state]);
 
   if (!data) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <h1>No paste data was found</h1>
+      </div>
+    );
   }
 
   // change message hook
