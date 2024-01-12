@@ -61,7 +61,7 @@ const RemixPaste = () => {
     }
   };
 
-  const handleClick = async (message, title) => {
+  const handleClick = async (message) => {
     const newName = await changeData(message);
     window.location.href = `http://localhost:3000/view/${newName}`;
   };
