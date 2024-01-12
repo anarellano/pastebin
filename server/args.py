@@ -8,7 +8,7 @@ def parse_args():
     parser.add_argument(
         "--sqlite-file-path",
         default="pastes.db",
-        help=" The path to pastes.db",
+        help="path to the sqlite file to store paste metadata. defaults to ./pastes.db",
     )
 
     parser.add_argument(
