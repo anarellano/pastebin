@@ -23,10 +23,10 @@ function Example(args) {
     <div>
       <Navbar {...args}>
         <NavbarBrand href="/">Anton's Pastebin</NavbarBrand>
-        <NavbarToggler onClick={toggle} />
-        <Collapse isOpen={isOpen} navbar>
+        {/* <NavbarToggler onClick={toggle} /> */}
+        {/* <Collapse isOpen={isOpen} navbar>
           <Nav className="me-auto" navbar></Nav>
-        </Collapse>
+        </Collapse> */}
       </Navbar>
     </div>
   );
