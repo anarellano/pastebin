@@ -17,7 +17,8 @@ const RemixPaste = () => {
           const res = await fetch(`http://localhost:8000/find/${name}`);
 
           if (!res) {
-            throw new Error("Fetch failed");
+            setData(null);
+            setTitle(null);
           }
           const file = await res.json();
 
@@ -61,7 +62,8 @@ const RemixPaste = () => {
     }
   };
 
-  const handleClick = async (message) => {
+  const handleClick = async (e) => {
+    e.preventDefault();
     const newName = await changeData(message);
     window.location.href = `http://localhost:3000/view/${newName}`;
   };
@@ -85,7 +87,7 @@ const RemixPaste = () => {
         {error && <p style={{ color: "red", paddingTop: "7px" }}>{error}</p>}
       </div>
       <div>
-        <button onClick={() => handleClick(message, title)}>Save</button>
+        <button onClick={(e) => handleClick(e)}>Save</button>
       </div>
     </div>
   );

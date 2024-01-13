@@ -21,7 +21,8 @@ const formatFile = () => {
           const res = await fetch(`http://localhost:8000/find/${name}`);
 
           if (!res) {
-            throw new Error("Fetch failed");
+            setTitle(null);
+            setData(null);
           }
           const file = await res.json();
 
