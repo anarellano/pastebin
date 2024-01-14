@@ -1,10 +1,11 @@
 from os import remove
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
 from models import PasteData
 import uvicorn
 from sqlite_commands import create_name, insert_text, find_name, fetch_all
 from args import parse_args
+from fastapi.responses import HTMLResponse
 
 app = FastAPI()
 
@@ -43,7 +44,11 @@ def find(name: str):
     # Get URL by id
     file_details = find_name(args.sqlite_file_path, name)
     if not file_details:
-        raise HTTPException(status_code=404, detail="No Name found")
+        return Response(
+            content="<html><body><h1>No Paste Found</h1></body></html>",
+            media_type="text/html",
+            status_code=404,
+        )
 
     f = open(file_details[2], "r")
     show_file = f.read()

@@ -1,20 +1,16 @@
 import React from "react";
 import "./App.css";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useParams,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import InputPaste from "./pages/inputPaste";
 import FormatFile from "./pages/formatFile";
 import Navbar from "./components/navbar";
+import RemixPaste from "./components/remixPaste";
 
 function App() {
   const files = [
     { path: "/", element: <InputPaste /> },
     { path: "/view/:name", element: <FormatFile /> },
-    // { path: "/History", element: <History /> },
+    { path: "/remix/:name", element: <RemixPaste /> },
   ];
   return (
     <Router>
