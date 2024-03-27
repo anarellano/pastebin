@@ -14,7 +14,6 @@ function App() {
   const files = [
     { path: "/", element: <InputPaste /> },
     { path: "/view/:name", element: <FormatFile /> },
-    // { path: "/History", element: <History /> },
   ];
   return (
     <Router>

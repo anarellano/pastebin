@@ -2,8 +2,6 @@ import sqlite3
 import string
 import random
 
-# table: pastes_table
-
 
 def connect_db(db_path):
     db = sqlite3.connect(
@@ -11,6 +9,28 @@ def connect_db(db_path):
     )
     cursor = db.cursor()
     return db, cursor
+
+
+def make_table(db_path):
+    db, cursor = connect_db(db_path)
+    try:
+        cursor.execute(
+            """
+                CREATE TABLE IF NOT EXSISTS pastes_table (
+                    id INTERGER PRIMARY KEY AUTOINCREMENT,
+                    name TEXT NOT NULL,
+                    path TEXT NOT NULL,
+                    used INTEGER DEFAULT 0
+                )
+                    
+        """
+        )
+        db.commit()
+        print("table 'pastes_table' checked/created successfully. ")
+    except sqlite3.Error:
+        print(sqlite3.Error)
+    finally:
+        db.close()
 
 
 def create_name(length=10):
@@ -57,3 +77,29 @@ def fetch_all(db_path):
     print("hey", all_records, flush=True)
     db.close()
     return all_records
+
+
+# fetch used top 10
+def fetch_top10(db_path):
+    db, cursor = connect_db(db_path)
+    cursor.execute(
+        """
+                   SELECT used FROM pastes_table ORDER BY column DESC LIMIT 10
+                   """
+    )
+    top10 = cursor.fetchall()
+    print("top 10 URL's used", top10, flush=True)
+    db.close()
+    return top10
+
+
+def used_increment(db_path, name):
+    db, cursor = connect_db(db_path)
+    try:
+        cursor.execute(
+            "UPDATE pastes_table SET used = used + 1 WHERE name = ?", (name,)
+        )
+    except sqlite3.Error:
+        print(sqlite3.Error)
+    finally:
+        db.close

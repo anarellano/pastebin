@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import History from "../components/history.js";
 
 const formatFile = () => {
   const location = useLocation();
@@ -15,6 +14,7 @@ const formatFile = () => {
         if (name) {
           const res = await fetch(`http://localhost:8000/find/${name}`);
           const file = await res.json();
+          console.log(file);
           setData(file);
         }
       } catch (error) {

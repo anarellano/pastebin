@@ -1,12 +1,25 @@
 from os import remove
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from models import PasteData
 import uvicorn
-from sqlite_commands import create_name, insert_text, find_name, fetch_all
+
 from args import parse_args
+from sqlite_commands import (
+    create_name,
+    insert_text,
+    find_name,
+    fetch_all,
+    make_table,
+    used_increment,
+    fetch_top10,
+)
+
 
 app = FastAPI()
+
+args = parse_args()
 
 # Configure CORS
 app.add_middleware(
@@ -16,7 +29,6 @@ app.add_middleware(
     allow_methods=["*"],  # Allows all methods
     allow_headers=["*"],  # Allows all headers
 )
-args = parse_args()
 
 
 @app.post("/store_paste")
@@ -38,6 +50,7 @@ def store_paste(paste_data: PasteData):
         return {"name": name}
 
 
+# find paste
 @app.get("/find/{name}")
 def find(name: str):
     # Get URL by id
@@ -45,6 +58,7 @@ def find(name: str):
     if not file_details:
         raise HTTPException(status_code=404, detail="No Name found")
 
+    used_increment(args.sqlite_file_path, name)
     f = open(file_details[2], "r")
     show_file = f.read()
     return {"file": file_details, "show_file": show_file}
@@ -71,6 +85,15 @@ def delete(name: str):
         print("Could not delete")
 
 
+# get top 10 used
+@app.get("/top10")
+def top_ten(name: str):
+    top10 = fetch_top10(args.sqlite_file_path, name)
+    return {"top 10 URLs": top10}
+
+
 if __name__ == "__main__":
+    make_table(args.sqlite_file_path)
+
     print("server started on http://{host}:{port}")
     uvicorn.run("api:app", host=args.host, port=args.port, reload=True)
